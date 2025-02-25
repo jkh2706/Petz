@@ -6,30 +6,33 @@
     <title>Pi Network App</title>
     <!-- Pi SDK 불러오기 -->
     <script src="https://sdk.minepi.com/pi-sdk.js"></script>
-    <script>
-        // Pi SDK 초기화
-        Pi.init({ version: "2.0",sandbox: true });
-
-        // 미완료 결제 처리 함수
-        function onIncompletePaymentFound(payment) {
-            console.log('미완료 결제 발견:', payment);
-            // 여기서 결제 처리 로직을 구현하세요.
-        }
-
-        // 사용자 인증
-        const scopes = ['payments', 'username'];
-        Pi.authenticate(scopes, onIncompletePaymentFound)
-            .then(function(auth) {
-                console.log('인증 성공:', auth);
-                // 인증 후 처리 로직을 구현하세요.
-            })
-            .catch(function(error) {
-                console.error('인증 실패:', error);
-            });
-    </script>
 </head>
 <body>
     <h1>Pi Network SDK 테스트</h1>
     <button onclick="authenticateUser()">Pi 로그인</button>
+
+    <script>
+        // Pi SDK 초기화 (테스트 모드)
+        Pi.init({ version: "2.0", sandbox: true });
+
+        // 미완료 결제 처리 함수
+        function onIncompletePaymentFound(payment) {
+            console.log('미완료 결제 발견:', payment);
+        }
+
+        // ✅ "Pi 로그인" 버튼을 클릭하면 실행될 authenticateUser() 함수 추가
+        function authenticateUser() {
+            const scopes = ['payments', 'username'];
+            Pi.authenticate(scopes, onIncompletePaymentFound)
+                .then(function(auth) {
+                    console.log('✅ 인증 성공:', auth);
+                    alert("로그인 성공! 사용자 정보: " + JSON.stringify(auth));
+                })
+                .catch(function(error) {
+                    console.error('❌ 인증 실패:', error);
+                    alert("로그인 실패! Pi Browser에서 실행해야 할 수도 있습니다.");
+                });
+        }
+    </script>
 </body>
 </html>
